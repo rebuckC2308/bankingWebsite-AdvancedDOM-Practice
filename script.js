@@ -11,6 +11,11 @@ const header = document.querySelector('.header');
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const links = document.querySelector('.nav__links');
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 //Modal Window functionality:
 const openModal = function (e) {
@@ -55,4 +60,33 @@ document
 //Implementing Smooth Scrolling:
 btnScrollTo.addEventListener('click', function () {
   section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+//Implementing Page Navigtion using Event Delegation
+links.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//Building a functional Tabbed Component
+tabsContainer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const clicked = e.target.closest('.operations__tab');
+
+  //GUARD CLAUSE:
+  if (!clicked) return;
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  tabsContent.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
